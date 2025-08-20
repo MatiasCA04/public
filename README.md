@@ -5,5 +5,5 @@ Repositório índice com os principais projetos desenvolvidos:
 - [Urban Flow](https://github.com/MatiasCA04/public/urban-flow)  
   Front office (HTML, CSS, JS) e back office administrativo.
 
-- [FSD Marketplace](https://github.com/MatiasCA04/Public/FSD(Python))  
+- [FSD Marketplace](https://github.com/MatiasCA04/public/tree/main/FSD(Python))  
   REST API em Python para gestão de marketplace.
