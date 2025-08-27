@@ -8,5 +8,5 @@ Repositório índice com os principais projetos desenvolvidos:
 - [FSD Marketplace](https://github.com/MatiasCA04/public/tree/main/FSD(Python))  
   REST API em Python para gestão de marketplace.
 
-- [Fototeta](https://github.com/MatiasCA04/public/tree/main/Fototeta)
+- [Fototeta](https://github.com/MatiasCA04/public/tree/main/Fototeta)    
   Android app e Middleware Python, para troca de mensagens com conexão Peer to Peer
