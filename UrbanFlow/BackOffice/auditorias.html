@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auditorias - Urban Flow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  </head>
+  <body class="flex bg-gray-100 font-sans">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 min-h-screen bg-[#0b0b5a] text-white fixed transition-transform duration-300">
+      <div class="flex items-center gap-2 px-6 py-4 text-xl font-bold">
+        <img src="assets/logo1.png" alt="Logo" class="w-8 h-8 object-contain" />
+        Urban Flow
+      </div>
+      <nav class="flex flex-col gap-2 px-4">
+        <button onclick="window.location.href='dashboard.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-house-door"></i> Início
+        </button>
+        <button onclick="window.location.href='ocorrencias.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-exclamation-triangle"></i> Ocorrências
+        </button>
+        <button onclick="window.location.href='atrasos.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-bar-chart"></i> Atrasos
+        </button>
+        <button onclick="window.location.href='auditorias.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-newspaper"></i> Auditorias
+        </button>
+        <button onclick="window.location.href='peritos.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-person-badge"></i> Peritos
+        </button>
+        <button onclick="window.location.href='materiais.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-box"></i> Materiais
+        </button>
+        <button onclick="window.location.href='stats.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-bar-chart"></i> Indicadores
+        </button>
+        <button onclick="window.location.href='mensagens.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500">
+            <i class="bi bi-bar-chart"></i> Mensagens
+          </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div id="main" class="flex-1 ml-64 transition-all duration-300">
+      <!-- Topbar -->
+      <header id="topbar" class="flex justify-between items-center bg-white shadow px-6 py-2 fixed top-0 z-10 w-[calc(100%-16rem)] transition-all duration-300">
+        <button id="toggle-btn" class="text-black text-xl" onclick="toggleSidebar()">☰</button>
+        <h3 class="text-lg font-semibold">Admin Urban Flow</h3>
+        <div class="relative group">
+          <button class="text-black focus:outline-none" id="profile-btn">
+            <i class="bi bi-person-circle text-2xl"></i>
+          </button>
+          <div id="profile-menu" class="hidden group-hover:block absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+            <button onclick="window.location.href='perfil.html'" class="w-full text-left px-4 py-2 hover:bg-gray-100">Perfil</button>
+          </div>
+        </div>
+      </header>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const btn = document.getElementById('profile-btn');
+          const menu = document.getElementById('profile-menu');
+          if (btn && menu) {
+            btn.addEventListener('click', function (e) {
+              e.stopPropagation();
+              menu.classList.toggle('hidden');
+            });
+            document.addEventListener('click', function () {
+              menu.classList.add('hidden');
+            });
+          }
+        });
+        function toggleSidebar() {
+          const sidebar = document.getElementById('sidebar');
+          const main = document.getElementById('main');
+          const topbar = document.getElementById('topbar');
+          if (sidebar.classList.contains('-translate-x-full')) {
+            sidebar.classList.remove('-translate-x-full');
+            main.classList.remove('ml-0');
+            main.classList.add('ml-64');
+            topbar.classList.remove('w-full');
+            topbar.classList.add('w-[calc(100%-16rem)]');
+          } else {
+            sidebar.classList.add('-translate-x-full');
+            main.classList.remove('ml-64');
+            main.classList.add('ml-0');
+            topbar.classList.remove('w-[calc(100%-16rem)]');
+            topbar.classList.add('w-full');
+          }
+        }
+      </script>
+      <!-- Content -->
+      <main class="pt-16 px-6 pb-6">
+        <div class="flex justify-between items-center mb-4">
+          <h1 class="text-2xl font-semibold">Auditorias</h1>
+        </div>
+        <div class="overflow-x-auto rounded-lg shadow-md">
+          <table class="min-w-full divide-y divide-gray-200 shadow rounded-lg overflow-hidden">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Título</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"></th>
+              </tr>
+            </thead>
+            <tbody id="tabela-auditorias" class="bg-white divide-y divide-gray-200">
+              <!-- conteúdo dinâmico -->
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        migrarOcorrenciasAprovadas();
+        renderizarTabelaAuditorias();
+      });
+
+      function migrarOcorrenciasAprovadas() {
+        const ocorrencias = JSON.parse(localStorage.getItem("ocorrencias") || "[]");
+        let auditorias = JSON.parse(localStorage.getItem("auditorias") || "[]");
+        const novas = ocorrencias
+          .filter(o => o.status === "aprovado" && !auditorias.some(a => a.idOcorrencia === o.id))
+          .map(o => ({
+            id: Date.now() + Math.floor(Math.random() * 1000),
+            idOcorrencia: o.id,
+            titulo: o.titulo,
+            detalhes: o.detalhes,
+            tipo: o.tipo,
+            data: o.data,
+            hora: o.hora,
+            localizacao: o.localizacao,
+            ficheiro: o.ficheiro,
+            estado: "em resolução",
+            perito: "",
+            materiais: [],
+            duracao: "",
+            custo: ""
+          }));
+        if (novas.length > 0) {
+          auditorias = [...auditorias, ...novas];
+          localStorage.setItem("auditorias", JSON.stringify(auditorias));
+        }
+      }
+
+      function renderizarTabelaAuditorias() {
+        const auditorias = JSON.parse(localStorage.getItem("auditorias") || "[]");
+        const tbody = document.getElementById("tabela-auditorias");
+        tbody.innerHTML = "";
+
+        for (const a of auditorias) {
+          const corEstado = a.estado === "resolvido" ? "text-green-600" : (a.estado === "em resolução" ? "text-yellow-600" : "text-red-600");
+          const temPlano = a.peritos && a.peritos.length > 0 && a.materiais && a.materiais.length > 0 && a.custo !== undefined && a.custo !== "";
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td class="px-4 py-2">${a.titulo || "-"}</td>
+            <td class="px-4 py-2">${a.data || "-"}</td>
+            <td class="px-4 py-2 ${corEstado} capitalize">
+              <select onchange="alterarEstadoAuditoria('${a.idAuditoria || a.id}', this.value)" class="border rounded px-2 py-1">
+                <option value="em resolução" ${a.estado === "em resolução" ? "selected" : ""}>Em Resolução</option>
+                <option value="resolvido" ${a.estado === "resolvido" ? "selected" : ""}>Resolvido</option>
+                <option value="por resolver" ${a.estado === "por resolver" ? "selected" : ""}>Por Resolver</option>
+              </select>
+            </td>
+            <td class="px-4 py-2 text-center">
+              ${temPlano
+                ? `<button onclick="verRelatorioAuditoria('${a.idAuditoria || a.id}')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm transition">Ver Relatório</button>`
+                : `<button onclick="criarPlanoAuditoria(${a.idOcorrencia})" style="background-color:#0b0b5a" class="hover:bg-blue-800 text-white px-3 py-1 rounded text-sm transition">Criar Plano de Auditoria</button>`
+              }
+            </td>
+          `;
+          tbody.appendChild(tr);
+        }
+      }
+
+      function alterarEstadoAuditoria(id, novoEstado) {
+        let auditorias = JSON.parse(localStorage.getItem("auditorias") || "[]");
+        const idx = auditorias.findIndex(a => (a.idAuditoria || a.id) == id);
+        if (idx !== -1) {
+          auditorias[idx].estado = novoEstado;
+          localStorage.setItem("auditorias", JSON.stringify(auditorias));
+          renderizarTabelaAuditorias();
+        }
+      }
+
+      function criarPlanoAuditoria(id) {
+        const ocorrencias = JSON.parse(localStorage.getItem("ocorrencias") || "[]");
+        const auditorias = JSON.parse(localStorage.getItem("auditorias") || "[]");
+        const peritos = JSON.parse(localStorage.getItem("peritos") || "[]");
+        const materiais = JSON.parse(localStorage.getItem("materiais") || "[]");
+        const ocorrencia = ocorrencias.find(o => o.id === id);
+        if (!ocorrencia) return;
+
+        const novoIDAuditoria = "AUD" + String(auditorias.length + 1).padStart(4, "0");
+
+        // Filtra peritos pela especialidade igual ao tipo da ocorrência
+        const peritosFiltrados = peritos.filter(p => p.especialidade === ocorrencia.tipo);
+
+        // Gera HTML dos peritos (multi-select)
+        const peritosHTML = peritosFiltrados.length === 0
+          ? '<option disabled>Nenhum perito disponível</option>'
+          : peritosFiltrados.map(p => `<option value="${p.nome}">${p.nome} (${p.especialidade})</option>`).join('');
+
+        // Gera HTML dos materiais (checkbox + quantidade)
+        const materiaisHTML = materiais.length === 0
+          ? '<div class="text-gray-400">Nenhum material disponível</div>'
+          : materiais.map(m => `
+            <div class="flex items-center gap-2 mb-2">
+              <input type="checkbox" id="mat-${m.nome}" value="${m.nome}" class="material-checkbox" data-preco="${m.preco}" />
+              <label for="mat-${m.nome}" class="flex-1">${m.nome} <span class="text-xs text-gray-400">(${m.preco}€)</span></label>
+              <input type="number" min="1" value="1" class="material-qty w-16 border rounded px-2 py-1" data-material="${m.nome}" disabled />
+            </div>
+          `).join('');
+
+        // Modal para criar plano de auditoria
+        const modal = document.createElement("div");
+        modal.className = "fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50";
+        modal.innerHTML = `
+          <div class="bg-white rounded-xl shadow-lg w-full max-w-lg p-6 relative animate-fadeIn overflow-y-auto max-h-[90vh]">
+            <button onclick="this.parentElement.parentElement.remove()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            <h2 class="text-xl font-bold mb-4">Criar Plano de Auditoria</h2>
+            <form id="form-plano-auditoria">
+              <label class="block mb-2 text-sm font-medium">ID Auditoria:</label>
+              <input type="text" id="id-auditoria" value="${novoIDAuditoria}" class="w-full border p-2 mb-4 rounded" required />
+
+              <label class="block mb-2 text-sm font-medium">Tipo de Ocorrência:</label>
+              <input type="text" value="${ocorrencia.tipo || ''}" class="w-full border p-2 mb-4 rounded bg-gray-100" disabled />
+
+              <label class="block mb-2 text-sm font-medium">Título da Ocorrência:</label>
+              <input type="text" value="${ocorrencia.titulo}" class="w-full border p-2 mb-4 rounded bg-gray-100" disabled />
+
+              <label class="block mb-2 text-sm font-medium">Detalhes:</label>
+              <textarea class="w-full border p-2 mb-4 rounded bg-gray-100" disabled>${ocorrencia.detalhes}</textarea>
+
+              <label class="block mb-2 text-sm font-medium">Data:</label>
+              <input type="text" value="${ocorrencia.data}" class="w-full border p-2 mb-4 rounded bg-gray-100" disabled />
+
+              <label class="block mb-2 text-sm font-medium">Hora:</label>
+              <input type="text" value="${ocorrencia.hora}" class="w-full border p-2 mb-4 rounded bg-gray-100" disabled />
+
+              <label class="block mb-2 text-sm font-medium">Localização:</label>
+              <input type="text" value="${ocorrencia.localizacao}" class="w-full border p-2 mb-4 rounded bg-gray-100" disabled />
+
+              <label class="block mb-2 text-sm font-medium">Foto/Ficheiro:</label>
+              <button type="button" onclick="verFicheiroOcorrencia('${ocorrencia.ficheiro || ''}')" class="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded mb-4">Ver Foto/Ficheiro</button>
+
+              <label class="block mb-2 text-sm font-medium">Peritos Atribuídos:</label>
+              <select id="peritos-auditoria" class="w-full border p-2 mb-4 rounded" multiple required>
+                ${peritosHTML}
+              </select>
+
+              <label class="block mb-2 text-sm font-medium">Materiais Utilizados:</label>
+              <div id="materiais-list" class="mb-4">
+                ${materiaisHTML}
+              </div>
+
+              <label class="block mb-2 text-sm font-medium">Custo Total da Auditoria (€):</label>
+              <input type="text" id="custo-auditoria" class="w-full border p-2 mb-4 rounded bg-gray-100" value="0" readonly />
+
+              <label class="block mb-2 text-sm font-medium">Duração Estimada (horas):</label>
+              <input type="number" id="duracao-auditoria" min="1" class="w-full border p-2 mb-4 rounded" required />
+
+              <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mt-2 w-full">Guardar Plano</button>
+            </form>
+          </div>
+        `;
+        document.body.appendChild(modal);
+
+        // Ativar/desativar input de quantidade conforme o checkbox
+        modal.querySelectorAll('.material-checkbox').forEach(cb => {
+          cb.addEventListener('change', function() {
+            const qtyInput = modal.querySelector(`.material-qty[data-material="${cb.value}"]`);
+            qtyInput.disabled = !cb.checked;
+            if (cb.checked && qtyInput.value === "") qtyInput.value = 1;
+            atualizarCustoAuditoria();
+          });
+        });
+
+        // Atualizar custo ao mudar quantidade
+        modal.querySelectorAll('.material-qty').forEach(qtyInput => {
+          qtyInput.addEventListener('input', atualizarCustoAuditoria);
+        });
+
+        function atualizarCustoAuditoria() {
+          let total = 0;
+          modal.querySelectorAll('.material-checkbox:checked').forEach(cb => {
+            const preco = parseFloat(cb.dataset.preco) || 0;
+            const nome = cb.value;
+            const qty = parseInt(modal.querySelector(`.material-qty[data-material="${nome}"]`).value, 10) || 1;
+            total += preco * qty;
+          });
+          modal.querySelector('#custo-auditoria').value = total.toFixed(2);
+        }
+
+        // Guardar plano de auditoria
+        modal.querySelector("#form-plano-auditoria").onsubmit = function(e) {
+          e.preventDefault();
+          const idAuditoria = document.getElementById("id-auditoria").value;
+          const peritosSelecionados = Array.from(document.getElementById("peritos-auditoria").selectedOptions).map(opt => opt.value);
+
+          // Materiais selecionados com quantidade
+          const materiaisSelecionados = [];
+          modal.querySelectorAll('.material-checkbox:checked').forEach(cb => {
+            const nome = cb.value;
+            const qty = parseInt(modal.querySelector(`.material-qty[data-material="${nome}"]`).value, 10) || 1;
+            materiaisSelecionados.push({ nome, quantidade: qty });
+          });
+
+          const custo = modal.querySelector('#custo-auditoria').value;
+          const duracao = document.getElementById("duracao-auditoria").value;
+
+          // Atualiza auditoria existente
+          let auditorias = JSON.parse(localStorage.getItem("auditorias") || "[]");
+          const idx = auditorias.findIndex(a => a.idOcorrencia === ocorrencia.id);
+          if (idx !== -1) {
+            auditorias[idx] = {
+              ...auditorias[idx],
+              idAuditoria,
+              peritos: peritosSelecionados,
+              materiais: materiaisSelecionados,
+              duracao,
+              custo,
+              estado: auditorias[idx].estado || "em resolução" // <-- garante que o estado é guardado
+            };
+          } else {
+            auditorias.push({
+              idAuditoria,
+              idOcorrencia: ocorrencia.id,
+              titulo: ocorrencia.titulo,
+              detalhes: ocorrencia.detalhes,
+              data: ocorrencia.data,
+              peritos: peritosSelecionados,
+              materiais: materiaisSelecionados,
+              duracao,
+              custo,
+              estado: "em resolução" // <-- novo plano começa sempre em resolução
+            });
+          }
+          localStorage.setItem("auditorias", JSON.stringify(auditorias));
+          modal.remove();
+          renderizarTabelaAuditorias();
+        };
+      }
+
+      function verRelatorioAuditoria(id) {
+        const auditorias = JSON.parse(localStorage.getItem("auditorias") || "[]");
+        const a = auditorias.find(a => (a.idAuditoria || a.id) == id);
+        if (!a) return alert("Auditoria não encontrada!");
+
+        const peritos = (a.peritos || []).join(", ");
+        const materiais = (a.materiais || []).map(m => `${m.nome} (x${m.quantidade})`).join(", ");
+        const custo = a.custo || "0";
+
+        const modal = document.createElement("div");
+        modal.className = "fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50";
+        modal.innerHTML = `
+          <div class="bg-white rounded-xl shadow-lg w-full max-w-lg p-6 relative animate-fadeIn overflow-y-auto max-h-[90vh]">
+            <button onclick="this.parentElement.parentElement.remove()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            <h2 class="text-xl font-bold mb-4">Relatório da Auditoria</h2>
+            <div class="mb-2"><b>ID:</b> ${a.idAuditoria || a.id}</div>
+            <div class="mb-2"><b>Título:</b> ${a.titulo || "-"}</div>
+            <div class="mb-2"><b>Data:</b> ${a.data || "-"}</div>
+            <div class="mb-2"><b>Estado:</b> ${a.estado || "-"}</div>
+            <div class="mb-2"><b>Peritos:</b> ${peritos || "-"}</div>
+            <div class="mb-2"><b>Materiais:</b> ${materiais || "-"}</div>
+            <div class="mb-2"><b>Custo Total:</b> ${custo} €</div>
+            <div class="mb-2"><b>Duração Estimada:</b> ${a.duracao || "-"} horas</div>
+            <div class="mb-2"><b>Detalhes:</b> ${a.detalhes || "-"}</div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      }
+
+      function verFicheiroOcorrencia(base64) {
+        if (!base64) {
+          alert("Sem ficheiro associado.");
+          return;
+        }
+        if (base64.startsWith("data:application/pdf")) {
+          window.open(base64, "_blank");
+        } else {
+          const imgModal = document.createElement("div");
+          imgModal.className = "fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50";
+          imgModal.innerHTML = `
+            <div class="relative">
+              <button onclick="this.parentElement.parentElement.remove()" class="absolute top-0 right-0 m-2 text-white text-3xl">&times;</button>
+              <img src="${base64}" alt="Foto da Ocorrência" class="max-h-[80vh] max-w-[90vw] rounded shadow-lg border-4 border-white" />
+            </div>
+          `;
+          document.body.appendChild(imgModal);
+        }
+      }
+    </script>
+  </body>
+</html>

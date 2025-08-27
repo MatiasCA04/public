@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicadores - Urban Flow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .status {
+            padding: 4px 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            color: white;
+            text-transform: capitalize;
+            font-size: 0.95rem;
+        }
+        .status-vermelho { background-color: #dc3545; }
+        .status-amarelo { background-color: #ffc107; color: black; }
+        .status-verde { background-color: #28a745; }
+    </style>
+</head>
+<body class="flex bg-gray-100 font-sans">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 min-h-screen bg-[#0b0b5a] text-white fixed transition-transform duration-300">
+        <div class="flex items-center gap-2 px-6 py-4 text-xl font-bold">
+            <img src="assets/logo1.png" alt="Logo" class="w-8 h-8 object-contain" />
+            Urban Flow
+        </div>
+        <nav class="flex flex-col gap-2 px-4">
+        <button onclick="window.location.href='dashboard.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-house-door"></i> Início
+        </button>
+        <button onclick="window.location.href='ocorrencias.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-exclamation-triangle"></i> Ocorrências
+        </button>
+        <button onclick="window.location.href='atrasos.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-bar-chart"></i> Atrasos
+        </button>
+        <button onclick="window.location.href='auditorias.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-newspaper"></i> Auditorias
+        </button>
+        <button onclick="window.location.href='peritos.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-person-badge"></i> Peritos
+        </button>
+        <button onclick="window.location.href='materiais.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-box"></i> Materiais
+        </button>
+        <button onclick="window.location.href='stats.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-bar-chart"></i> Indicadores
+        </button>
+        <button onclick="window.location.href='mensagens.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500">
+            <i class="bi bi-bar-chart"></i> Mensagens
+          </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div id="main" class="flex-1 ml-64 transition-all duration-300">
+        <!-- Topbar -->
+        <header id="topbar" class="flex justify-between items-center bg-white shadow px-6 py-2 fixed top-0 z-10 w-[calc(100%-16rem)] transition-all duration-300">
+            <button id="toggle-btn" class="text-black text-xl" onclick="toggleSidebar()">☰</button>
+            <h3 class="text-lg font-semibold">Admin Urban Flow</h3>
+            <div class="relative group">
+                <button class="text-black focus:outline-none" id="profile-btn">
+                    <i class="bi bi-person-circle text-2xl"></i>
+                </button>
+                <div id="profile-menu" class="hidden group-hover:block absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+                    <button onclick="window.location.href='perfil.html'" class="w-full text-left px-4 py-2 hover:bg-gray-100">Perfil</button>
+                </div>
+            </div>
+        </header>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const btn = document.getElementById('profile-btn');
+                const menu = document.getElementById('profile-menu');
+                if (btn && menu) {
+                    btn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        menu.classList.toggle('hidden');
+                    });
+                    document.addEventListener('click', function () {
+                        menu.classList.add('hidden');
+                    });
+                }
+            });
+            function toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                const main = document.getElementById('main');
+                const topbar = document.getElementById('topbar');
+                if (sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.remove('-translate-x-full');
+                    main.classList.remove('ml-0');
+                    main.classList.add('ml-64');
+                    topbar.classList.remove('w-full');
+                    topbar.classList.add('w-[calc(100%-16rem)]');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    main.classList.remove('ml-64');
+                    main.classList.add('ml-0');
+                    topbar.classList.remove('w-[calc(100%-16rem)]');
+                    topbar.classList.add('w-full');
+                }
+            }
+        </script>
+
+        <!-- Content -->
+            <main class="pt-16 px-6 pb-6">
+                <h1 class="text-2xl font-semibold mb-6">Indicadores</h1>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                    <!-- Gráfico de Ocorrências -->
+                    <div class="bg-white rounded-lg shadow p-4 flex flex-col items-center">
+                        <span class="font-semibold text-base mb-2">Ocorrências por Mês</span>
+                        <canvas id="graficoOcorrencias" height="120" style="max-width:100%"></canvas>
+                    </div>
+                    <!-- Gráfico de Custos das Auditorias -->
+                    <div class="bg-white rounded-lg shadow p-4 flex flex-col items-center">
+                        <span class="font-semibold text-base mb-2">Custos Auditorias (€)</span>
+                        <canvas id="graficoCustosAuditorias" height="120" style="max-width:100%"></canvas>
+                    </div>
+                    <!-- Gráfico de Auditorias por Estado -->
+                    <div class="bg-white rounded-lg shadow p-4 flex flex-col items-center">
+                        <span class="font-semibold text-base mb-2">Auditorias por Estado</span>
+                        <canvas id="graficoAuditorias" height="120" style="max-width:50%"></canvas>
+                    </div>
+                </div>
+            <!-- Tabela de Auditorias -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="font-semibold mb-4">Resumo de Auditorias</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full table-auto">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-2 text-center">ID</th>
+                                <th class="px-4 py-2 text-center">Área</th>
+                                <th class="px-4 py-2 text-center">Estado</th>
+                                <th class="px-4 py-2 text-center">Data</th>
+                            </tr>
+                        </thead>
+                        <tbody id="auditorias-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Ocorrências por mês (aprovadas, rejeitadas, resolvidas)
+        function getOcorrenciasPorMes() {
+            const ocorrencias = JSON.parse(localStorage.getItem("ocorrencias") || "[]");
+            const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+            const aprovadasPorMes = Array(12).fill(0);
+            const rejeitadasPorMes = Array(12).fill(0);
+            const resolvidasPorMes = Array(12).fill(0);
+
+            ocorrencias.forEach(o => {
+                if (o.data) {
+                    const [ano, mes] = o.data.split("-");
+                    const idx = parseInt(mes, 10) - 1;
+                    if (idx >= 0 && idx < 12) {
+                        if ((o.status || o.estado || "").toLowerCase() === "aprovado") aprovadasPorMes[idx]++;
+                        if ((o.status || o.estado || "").toLowerCase() === "rejeitado") rejeitadasPorMes[idx]++;
+                        if ((o.estado || o.status || "").toLowerCase() === "resolvido") resolvidasPorMes[idx]++;
+                    }
+                }
+            });
+            return { meses, aprovadasPorMes, rejeitadasPorMes, resolvidasPorMes };
+        }
+
+        function getAuditorias() {
+            return JSON.parse(localStorage.getItem("auditorias") || "[]");
+        }
+
+        // Custos das auditorias por mês
+        function getCustosAuditoriasPorMes() {
+            const auditorias = getAuditorias();
+            const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+            const custosPorMes = Array(12).fill(0);
+
+            auditorias.forEach(a => {
+                if (a.data && a.custo) {
+                    const [ano, mes] = a.data.split("-");
+                    const idx = parseInt(mes, 10) - 1;
+                    if (idx >= 0 && idx < 12) {
+                        const custo = parseFloat(a.custo) || 0;
+                        custosPorMes[idx] += custo;
+                    }
+                }
+            });
+            return { meses, custosPorMes };
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Gráfico de Ocorrências (Aprovadas, Rejeitadas, Resolvidas)
+            const { meses, aprovadasPorMes, rejeitadasPorMes, resolvidasPorMes } = getOcorrenciasPorMes();
+            const ctx1 = document.getElementById('graficoOcorrencias').getContext('2d');
+            new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: meses,
+                    datasets: [
+                        {
+                            label: 'Aprovadas',
+                            data: aprovadasPorMes,
+                            backgroundColor: 'rgba(40,167,69,0.2)',
+                            borderColor: 'rgba(40,167,69,1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Rejeitadas',
+                            data: rejeitadasPorMes,
+                            backgroundColor: 'rgba(220,53,69,0.2)',
+                            borderColor: 'rgba(220,53,69,1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Resolvidas',
+                            data: resolvidasPorMes,
+                            backgroundColor: 'rgba(59,130,246,0.2)',
+                            borderColor: 'rgba(59,130,246,1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: true } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            // Gráfico de Custos das Auditorias por Mês
+            const { meses: mesesCustos, custosPorMes } = getCustosAuditoriasPorMes();
+            const ctx3 = document.getElementById('graficoCustosAuditorias').getContext('2d');
+            new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: mesesCustos,
+                    datasets: [{
+                        label: 'Custo (€)',
+                        data: custosPorMes,
+                        backgroundColor: 'rgba(59,130,246,0.6)',
+                        borderColor: 'rgba(59,130,246,1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+            // Gráfico de Auditorias por Estado
+            const auditorias = getAuditorias();
+            const estados = ['Resolvido', 'Por Resolver', 'Em Resolução'];
+            const counts = estados.map(e => auditorias.filter(a => (a.estado || "").toLowerCase() === e.toLowerCase()).length);
+            const ctx2 = document.getElementById('graficoAuditorias').getContext('2d');
+            new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: estados,
+                    datasets: [{
+                        data: counts,
+                        backgroundColor: [
+                            '#28a745', // verde
+                            '#dc3545', // vermelho
+                            '#ffc107'  // amarelo
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // Renderizar tabela de auditorias
+            const tbody = document.getElementById('auditorias-tbody');
+            tbody.innerHTML = '';
+            auditorias.forEach(a => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="px-4 py-2 text-center">${a.idAuditoria || a.id || ""}</td>
+                        <td class="px-4 py-2 text-center">${a.localizacao || a.area || ""}</td>
+                        <td class="px-4 py-2 text-center">
+                            <span class="status ${getStatusClass(a.estado)}">${a.estado || "N/A"}</span>
+                        </td>
+                        <td class="px-4 py-2 text-center">${a.data || ""}</td>
+                    </tr>
+                `;
+            });
+        });
+
+        function getStatusClass(status) {
+            switch ((status || '').toLowerCase()) {
+                case 'por resolver': return 'status-vermelho';
+                case 'em resolução': return 'status-amarelo';
+                case 'resolvido': return 'status-verde';
+                default: return '';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Flow - Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        html, body {
+            height: 100% !important;
+        }
+        body {
+            background: url('assets/city-view1.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+    
+        }
+        .btn-google {
+            background-color: #dd4b39;
+            color: white;
+            width: 100%;
+        }
+        .btn-google:hover {
+            background-color: #c23321;
+        }
+    </style>
+</head>
+<body class="hold-transition login-page">
+   <div class="login-container">
+        <div class="card-header text-center">
+            <h1 class="h3"><b>Urban Flow</b></h1>
+        </div>
+        <div class="card-body">
+            <div id="g_id_onload"
+            data-client_id="339577396501-sof7qvn5uve014rqekli60m8e6ha22v8.apps.googleusercontent.com"
+            data-callback="handleCredentialResponse">
+            </div>
+            <div class="g_id_signin" data-type="standard"></div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        function handleCredentialResponse(response) {
+            const jwt = response.credential;
+            const user = parseJwt(jwt);
+
+            // Salva o usuário na sessão (inclui foto)
+            sessionStorage.setItem("user", JSON.stringify(user));
+
+            // Redireciona para o dashboard
+            window.location.href = "dashboard.html";
+        }
+
+        function parseJwt(token) {
+            let base64Url = token.split('.')[1];
+            let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            let jsonPayload = decodeURIComponent(atob(base64).split('').map(c => 
+                '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')
+            );
+            return JSON.parse(jsonPayload);
+        }
+            document.getElementById("loginForm").addEventListener("submit", function(event) {
+                event.preventDefault();
+                window.location.href = "dashboard.html";
+            });
+
+            document.getElementById("googleLogin").addEventListener("click", function() {
+                alert("Login com Google ainda não implementado.");
+            });
+    </script>
+</body>
+</html>

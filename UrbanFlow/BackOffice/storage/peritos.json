@@ -1,0 +1,23 @@
+[
+    {
+      "nome": "Ana Silva",
+      "email": "ana.silva@urbanflow.pt",
+      "area": "Autocarros"
+    },
+    {
+      "nome": "João Ferreira",
+      "email": "joao.ferreira@urbanflow.pt",
+      "area": "Paragens"
+    },
+    {
+      "nome": "Carla Mendes",
+      "email": "carla.mendes@urbanflow.pt",
+      "area": "Linhas"
+    },
+    {
+      "nome": "Miguel Costa",
+      "email": "miguel.costa@urbanflow.pt",
+      "area": "Autocarros"
+    }
+  ]
+  

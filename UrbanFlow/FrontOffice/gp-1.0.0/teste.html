@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estatísticas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .section {
+            padding: 60px 0;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+        
+        .stats-box {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+        }
+        
+        .stats-box h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-box p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: white;
+            border: 6px solid navy;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-item:hover .stat-circle {
+            box-shadow: 0 0 15px rgba(0, 0, 150, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .stat-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .stat-icon {
+            font-size: 2rem;
+            color: #ff9900;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .stat-content {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .stat-item:hover .stat-value {
+            color: navy;
+        }
+        
+        .stat-description {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section id="stats" class="stats section">
+        <div class="container">
+            <h1>Estatísticas</h1>
+            <div class="stats-box">
+                <h3 class="fw-bold">Voluptatem dignissimos provident quasi</h3>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit
+                </p>
+                
+                <div class="stats-container">
+                    <!-- 1st Stat -->
+                    <div class="stat-item">
+                        <div class="stat-circle">
+                            <img src="imagem-ocorrencias.png" alt="Ocorrências">
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">120</div>
+                            <div class="stat-description">Ocorrências Relativas a 2025</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 2nd Stat -->
+                    <div class="stat-item">
+                        <div class="stat-circle">
+                            <img src="imagem-percentagem.png" alt="Percentagem">
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">75%</div>
+                            <div class="stat-description">Percentagem de Ocorrências resolvidas</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 3rd Stat -->
+                    <div class="stat-item">
+                        <div class="stat-circle">
+                            <img src="imagem-auditorias.png" alt="Auditorias">
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">90</div>
+                            <div class="stat-description">Auditorias Realizadas em 2025</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 4th Stat -->
+                    <div class="stat-item">
+                        <div class="stat-circle">
+                            <div class="stat-icon">
+                                <i class="bi bi-people"></i>
+                            </div>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">15</div>
+                            <div class="stat-description">Peritos a Trabalhar Connosco</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+
+
+
+
+

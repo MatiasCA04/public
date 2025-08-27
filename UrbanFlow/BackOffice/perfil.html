@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil do Utilizador</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+</head>
+<body class="bg-white flex items-center justify-center min-h-screen relative">
+  <!-- Botão voltar mais à esquerda -->
+  <button onclick="window.history.back()" class="fixed top-6 left-6 bg-white rounded-full shadow p-2 hover:bg-gray-100 transition z-20">
+    <i class="bi bi-arrow-left text-2xl text-gray-700"></i>
+  </button>
+  <div class="w-full max-w-md mt-16">
+    <div class="flex flex-col items-center mb-8">
+      <div class="w-24 h-24 rounded-full border-2 border-gray-300 flex items-center justify-center mb-4">
+        <i class="bi bi-person text-6xl text-gray-500"></i>
+      </div>
+    </div>
+    <form id="perfilForm" class="space-y-4 bg-white">
+      <input id="nomeUtilizador" type="text" placeholder="Nome Utilizador" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400" disabled />
+      <input id="nomeCompleto" type="text" placeholder="Nome Completo" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400" disabled />
+      <div class="relative">
+        <input id="dataNascimento" type="date" placeholder="Data de Nascimento" class="w-full border rounded-lg px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-400" disabled />
+        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+          <i class="bi bi-calendar"></i>
+        </span>
+      </div>
+      <div class="relative">
+        <input id="email" type="email" placeholder="E-mail" class="w-full border rounded-lg px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-400" disabled />
+        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+          <i class="bi bi-envelope"></i>
+        </span>
+      </div>
+      <div class="flex items-center border rounded-lg px-4 py-3 bg-white">
+        <span class="mr-2">
+          <img src="https://hatscripts.github.io/circle-flags/flags/pt.svg" alt="PT" class="w-6 h-6 inline" />
+        </span>
+        <input id="telefone" type="tel" placeholder="Número de Telefone" class="flex-1 border-0 focus:ring-0 outline-none" disabled />
+      </div>
+      <input id="morada" type="text" placeholder="Morada" class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400" disabled />
+      <button type="button" id="editarBtn" class="w-full bg-[#0b0b5a] text-white rounded-full py-3 font-semibold mt-6 hover:bg-blue-900 transition">Editar Perfil</button>
+      <button type="submit" id="guardarBtn" class="w-full bg-green-600 text-white rounded-full py-3 font-semibold mt-2 hover:bg-green-800 transition hidden">Guardar Alterações</button>
+      <button type="button" onclick="logout()" class="w-full bg-red-600 text-white rounded-full py-3 font-semibold mt-2 hover:bg-red-800 transition">Terminar Sessão</button>
+    </form>
+  </div>
+  <script>
+    // Carregar dados do perfil ao abrir a página
+    window.onload = function() {
+      const perfil = JSON.parse(localStorage.getItem('perfil') || '{}');
+      if (perfil.nomeUtilizador) document.getElementById('nomeUtilizador').value = perfil.nomeUtilizador;
+      if (perfil.nomeCompleto) document.getElementById('nomeCompleto').value = perfil.nomeCompleto;
+      if (perfil.dataNascimento) document.getElementById('dataNascimento').value = perfil.dataNascimento;
+      if (perfil.email) document.getElementById('email').value = perfil.email;
+      if (perfil.telefone) document.getElementById('telefone').value = perfil.telefone;
+      if (perfil.morada) document.getElementById('morada').value = perfil.morada;
+    };
+
+    // Alternar entre editar e guardar
+    document.getElementById('editarBtn').onclick = function() {
+      document.querySelectorAll('#perfilForm input').forEach(inp => inp.disabled = false);
+      document.getElementById('editarBtn').classList.add('hidden');
+      document.getElementById('guardarBtn').classList.remove('hidden');
+    };
+
+    // Guardar dados do perfil ao submeter o formulário
+    document.getElementById('perfilForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const perfil = {
+        nomeUtilizador: document.getElementById('nomeUtilizador').value,
+        nomeCompleto: document.getElementById('nomeCompleto').value,
+        dataNascimento: document.getElementById('dataNascimento').value,
+        email: document.getElementById('email').value,
+        telefone: document.getElementById('telefone').value,
+        morada: document.getElementById('morada').value
+      };
+      localStorage.setItem('perfil', JSON.stringify(perfil));
+      alert('Perfil guardado com sucesso!');
+      document.querySelectorAll('#perfilForm input').forEach(inp => inp.disabled = true);
+      document.getElementById('editarBtn').classList.remove('hidden');
+      document.getElementById('guardarBtn').classList.add('hidden');
+    });
+
+    function logout() {
+      sessionStorage.removeItem("user");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

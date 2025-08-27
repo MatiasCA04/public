@@ -1,0 +1,33 @@
+[
+    {
+      "id": 1,
+      "titulo": "Autocarro Volvo 7700",
+      "preco": 150000,
+      "quantidade": 5
+    },
+    {
+      "id": 2,
+      "titulo": "Paragem com Abrigo e Painel",
+      "preco": 2500,
+      "quantidade": 20
+    },
+    {
+      "id": 3,
+      "titulo": "Linha 24 - Centro Histórico",
+      "preco": 0,
+      "quantidade": 1
+    },
+    {
+      "id": 4,
+      "titulo": "Autocarro Mercedes Citaro",
+      "preco": 170000,
+      "quantidade": 3
+    },
+    {
+      "id": 5,
+      "titulo": "Painel Solar para Paragens",
+      "preco": 600,
+      "quantidade": 12
+    }
+  ]
+  

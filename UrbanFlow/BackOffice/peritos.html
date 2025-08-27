@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peritos - Urban Flow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <style>
+      #modal-criar {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 1050;
+        background: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+      }
+      #modal-criar.show {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body class="flex bg-gray-100 font-sans">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 min-h-screen bg-[#0b0b5a] text-white fixed transition-transform duration-300">
+      <div class="flex items-center gap-2 px-6 py-4 text-xl font-bold">
+        <img src="assets/logo1.png" alt="Logo" class="w-8 h-8 object-contain" />
+        Urban Flow
+      </div>
+      <nav class="flex flex-col gap-2 px-4">
+        <button onclick="window.location.href='dashboard.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-house-door"></i> Início
+        </button>
+        <button onclick="window.location.href='ocorrencias.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-exclamation-triangle"></i> Ocorrências
+        </button>
+        <button onclick="window.location.href='atrasos.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-bar-chart"></i> Atrasos
+        </button>
+        <button onclick="window.location.href='auditorias.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-newspaper"></i> Auditorias
+        </button>
+        <button onclick="window.location.href='peritos.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-person-badge"></i> Peritos
+        </button>
+        <button onclick="window.location.href='materiais.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-box"></i> Materiais
+        </button>
+        <button onclick="window.location.href='stats.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500 ease-in-out">
+            <i class="bi bi-bar-chart"></i> Indicadores
+        </button>
+        <button onclick="window.location.href='mensagens.html'" class="flex items-center gap-2 p-2 hover:bg-blue-800 rounded transition-all duration-500">
+            <i class="bi bi-bar-chart"></i> Mensagens
+          </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div id="main" class="flex-1 ml-64 transition-all duration-300">
+      <!-- Topbar -->
+      <header id="topbar"
+        class="flex justify-between items-center bg-white shadow px-6 py-2 fixed top-0 z-10 w-[calc(100%-16rem)] transition-all duration-300">
+        <button id="toggle-btn" class="text-black text-xl" onclick="toggleSidebar()">☰</button>
+        <h3 class="text-lg font-semibold">Admin Urban Flow</h3>
+        <div class="relative group">
+          <button class="text-black focus:outline-none" id="profile-btn">
+            <i class="bi bi-person-circle text-2xl"></i>
+          </button>
+          <div id="profile-menu" class="hidden group-hover:block absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+            <button onclick="window.location.href='perfil.html'" class="w-full text-left px-4 py-2 hover:bg-gray-100">Perfil</button>
+          </div>
+        </div>
+      </header>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const btn = document.getElementById('profile-btn');
+          const menu = document.getElementById('profile-menu');
+          if (btn && menu) {
+            btn.addEventListener('click', function (e) {
+              e.stopPropagation();
+              menu.classList.toggle('hidden');
+            });
+            document.addEventListener('click', function () {
+              menu.classList.add('hidden');
+            });
+          }
+        });
+        function toggleSidebar() {
+          const sidebar = document.getElementById('sidebar');
+          const main = document.getElementById('main');
+          const topbar = document.getElementById('topbar');
+          if (sidebar.classList.contains('-translate-x-full')) {
+            sidebar.classList.remove('-translate-x-full');
+            main.classList.remove('ml-0');
+            main.classList.add('ml-64');
+            topbar.classList.remove('w-full');
+            topbar.classList.add('w-[calc(100%-16rem)]');
+          } else {
+            sidebar.classList.add('-translate-x-full');
+            main.classList.remove('ml-64');
+            main.classList.add('ml-0');
+            topbar.classList.remove('w-[calc(100%-16rem)]');
+            topbar.classList.add('w-full');
+          }
+        }
+      </script>
+
+      <!-- Content -->
+      <main class="pt-16 px-6 pb-6">
+        <div class="flex justify-between items-center mb-4">
+          <h1 class="text-2xl font-semibold">Peritos</h1>
+          <button onclick="abrirModalCriarPerito()" class="text-blue-600 hover:text-blue-800" title="Adicionar Perito">
+            <i class="bi bi-person-plus text-2xl"></i>
+          </button>
+        </div>
+        <div class="overflow-x-auto rounded-lg shadow-md mt-6">
+          <table class="min-w-full divide-y divide-gray-200 shadow rounded-lg overflow-hidden">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Especialidade</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-peritos" class="bg-white divide-y divide-gray-200">
+              <!-- conteúdo dinâmico -->
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal Criar/Editar Perito -->
+    <div id="modal-criar" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden flex items-center justify-center">
+      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm animate-fadeIn relative">
+        <button onclick="fecharModalCriarPerito()" class="absolute top-2 right-3 text-gray-500 text-2xl">&times;</button>
+        <h2 class="text-xl font-semibold mb-4" id="modal-perito-titulo">Adicionar Perito</h2>
+        <form onsubmit="guardarPerito(event)">
+          <label class="block mb-2">Nome:</label>
+          <input type="text" id="perito-nome" required class="w-full border px-3 py-2 rounded mb-4" />
+
+          <label class="block mb-2">Email:</label>
+          <input type="email" id="perito-email" required class="w-full border px-3 py-2 rounded mb-4" />
+
+          <label class="block mb-2">Data de Nascimento:</label>
+          <input type="date" id="perito-nascimento" required class="w-full border px-3 py-2 rounded mb-4" />
+
+          <label class="block mb-2">Especialidade:</label>
+          <select id="perito-especialidade" required class="w-full border px-3 py-2 rounded mb-4">
+            <option value="">Selecione</option>
+            <option value="Paragens">Paragens</option>
+            <option value="Autocarros">Autocarros</option>
+          </select>
+
+          <label class="block mb-2">Morada:</label>
+          <input type="text" id="perito-morada" required class="w-full border px-3 py-2 rounded mb-4" />
+
+          <label class="block mb-2">Nº Telemóvel:</label>
+          <input type="tel" id="perito-telemovel" required pattern="[0-9]{9}" maxlength="9" class="w-full border px-3 py-2 rounded mb-4" />
+
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      let peritoEditando = null;
+
+      function abrirModalCriarPerito() {
+        peritoEditando = null;
+        document.getElementById("modal-criar").classList.add("show");
+        document.getElementById("modal-perito-titulo").innerText = "Adicionar Perito";
+        document.getElementById("perito-nome").value = "";
+        document.getElementById("perito-email").value = "";
+        document.getElementById("perito-nascimento").value = "";
+        document.getElementById("perito-especialidade").value = "";
+        document.getElementById("perito-morada").value = "";
+        document.getElementById("perito-telemovel").value = "";
+      }
+
+      function abrirModalEditarPerito(nome) {
+        let peritos = JSON.parse(localStorage.getItem("peritos") || "[]");
+        const perito = peritos.find(p => p.nome === nome);
+        if (!perito) return;
+
+        peritoEditando = nome;
+        document.getElementById("perito-nome").value = perito.nome;
+        document.getElementById("perito-email").value = perito.email;
+        document.getElementById("perito-nascimento").value = perito.nascimento;
+        document.getElementById("perito-especialidade").value = perito.especialidade;
+        document.getElementById("perito-morada").value = perito.morada;
+        document.getElementById("perito-telemovel").value = perito.telemovel;
+
+        document.getElementById("modal-criar").classList.add("show");
+        document.getElementById("modal-perito-titulo").innerText = "Editar Perito";
+      }
+
+      function fecharModalCriarPerito() {
+        document.getElementById("modal-criar").classList.remove("show");
+        peritoEditando = null;
+        document.getElementById("modal-perito-titulo").innerText = "Adicionar Perito";
+      }
+
+      function guardarPerito(event) {
+        event.preventDefault();
+        const nome = document.getElementById("perito-nome").value.trim();
+        const email = document.getElementById("perito-email").value.trim();
+        const nascimento = document.getElementById("perito-nascimento").value;
+        const especialidade = document.getElementById("perito-especialidade").value;
+        const morada = document.getElementById("perito-morada").value.trim();
+        const telemovel = document.getElementById("perito-telemovel").value.trim();
+
+        if (!nome || !email || !nascimento || !especialidade || !morada || !telemovel) {
+          alert("Preencha todos os campos!");
+          return;
+        }
+
+        let peritos = JSON.parse(localStorage.getItem("peritos") || "[]");
+
+        if (peritoEditando) {
+          // Editar perito existente
+          if (
+            peritos.some(
+              p => (p.nome.toLowerCase() === nome.toLowerCase() || p.email.toLowerCase() === email.toLowerCase()) && p.nome !== peritoEditando
+            )
+          ) {
+            alert("⚠️ Já existe um perito com esse nome ou email.");
+            return;
+          }
+          const idx = peritos.findIndex(p => p.nome === peritoEditando);
+          if (idx !== -1) {
+            peritos[idx] = { nome, email, nascimento, especialidade, morada, telemovel };
+          }
+          peritoEditando = null;
+        } else {
+          // Adicionar novo perito
+          if (peritos.some(p => p.nome.toLowerCase() === nome.toLowerCase() || p.email.toLowerCase() === email.toLowerCase())) {
+            alert("⚠️ Este perito já existe.");
+            return;
+          }
+          peritos.push({ nome, email, nascimento, especialidade, morada, telemovel });
+        }
+
+        localStorage.setItem("peritos", JSON.stringify(peritos));
+        fecharModalCriarPerito();
+        renderTabelaPeritos();
+      }
+
+      function removerPerito(nome) {
+        if (!confirm(`Deseja remover o perito "${nome}"?`)) return;
+        let peritos = JSON.parse(localStorage.getItem("peritos") || "[]");
+        peritos = peritos.filter(p => p.nome !== nome);
+        localStorage.setItem("peritos", JSON.stringify(peritos));
+        renderTabelaPeritos();
+      }
+
+      function renderTabelaPeritos() {
+        let peritos = JSON.parse(localStorage.getItem("peritos") || "[]");
+        const tbody = document.getElementById("tabela-peritos");
+        tbody.innerHTML = "";
+        peritos.forEach(p => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td class="px-4 py-2">${p.nome}</td>
+            <td class="px-4 py-2">${p.especialidade}</td>
+            <td class="px-4 py-2 flex gap-2">
+              <button onclick="abrirModalEditarPerito('${p.nome.replace(/'/g, "\\'")}')" class="text-yellow-600 hover:bg-yellow-100 rounded p-2" title="Editar">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button onclick="removerPerito('${p.nome.replace(/'/g, "\\'")}')" class="text-red-600 hover:bg-red-100 rounded p-2" title="Remover">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        renderTabelaPeritos();
+      });
+
+      // Atualiza a tabela se os peritos mudarem noutra aba
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'peritos') {
+          renderTabelaPeritos();
+        }
+      });
+    </script>
+  </body>
+</html>
