@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Task Manager</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    {{-- Load CSS with Vite --}}
+    @vite('resources/css/register.css')   
+</head>
+<body>
+    <div class="wrapper">
+        <form action="{{ route('register') }}" method="POST">
+            @csrf
+            <h1>Register</h1>
+            <div class="input-box">
+                <input type="text" name="name" placeholder="Username" required>
+                <i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <input type="email" name="email" placeholder="Email" required>
+                <i class='bx bx-envelope'></i>
+            </div>
+            <div class="input-box">
+                <input type="password" name="password" placeholder="Password" required>
+                <i class='bx bxs-lock-alt' ></i>
+            </div>
+            <div class="input-box">
+                <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+                <i class='bx bx-lock-alt' ></i>
+            </div>
+            <button type="submit" class="btn">Register</button>
+            <div class="login-link">
+                <p>Already have an account? <a href="/">Login</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
