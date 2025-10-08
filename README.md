@@ -11,6 +11,5 @@ Repositório índice com os principais projetos desenvolvidos:
 - [Fototeta](https://github.com/MatiasCA04/public/tree/main/Fototeta)    
   Android app e Middleware Python, para troca de mensagens com conexão Peer to Peer.
 
-
 - [TaskMaster](https://github.com/MatiasCA04/public/tree/main/TaskMaster)
   Task Manager/To Do List, in PHP Laravel.
