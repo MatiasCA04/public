@@ -9,28 +9,47 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::all();
+        $tasks = Task::all(); 
         return view('tasks.index', compact('tasks'));
     }
 
     public function store(Request $request)
     {
-        $request->validate(['title' => 'required']);
-        Task::create($request->only('title'));
-        return redirect()->back();
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+        ]);
+
+        $task = new Task();
+        $task->title = $validated['title'];
+        $task->completed = false;
+        $task->description = null; // optional
+        $task->save();
+
+        return redirect()->route('tasks.index');
     }
 
     public function update(Request $request, Task $task)
     {
-        $task->update([
-            'completed' => $request->has('completed')
-        ]);
+        $task->completed = $request->has('completed') ? $request->completed : $task->completed;
+        if ($request->has('description')) {
+            $task->description = $request->description;
+        }
+        $task->save();
+
+        return redirect()->route('tasks.index');
+    }
+
+    public function toggle(Task $task)
+    {
+        $task->completed = !$task->completed;
+        $task->save();
+
         return redirect()->back();
     }
 
     public function destroy(Task $task)
     {
         $task->delete();
-        return redirect()->back();
+        return redirect()->route('tasks.index');
     }
 }

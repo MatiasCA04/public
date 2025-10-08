@@ -87,41 +87,190 @@ body{
     margin-left: 30px;
 }
 
-.wrapper3 .btn-delete{
-    width: 15%;
-    height: 40px;
-    background: #fff;
-    border: none;
-    outline: none;
-    border-radius: 40px;
-    box-shadow: 0 0 10 rgba(0, 0, 0, .1);
-    cursor: pointer;
-    font-size: 16px;
-    color: #333;
-    font-weight: 600;
-    margin-top: 10px;
+/* ------------------------------------------------------------- */
+/* NEW STYLES FOR THE TASK LIST BOXES                            */
+/* ------------------------------------------------------------- */
+
+.wrapper3 ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.wrapper3 ul{
-    width: 100%;
-}
-
-.wrapper3 li{
-    padding: 10px;
-}
-
-.wrapper3 .check-box{
-    width: 15%;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    font-size: 16px;
-    color: #333;
-    font-weight: 600;
-    margin-top: 10px;
-}
-
-.wrapper3 .title-box{
+.wrapper3 li {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 15px 25px;
+    margin-bottom: 20px;
     display: flex;
-    justify-content: left;
+    align-items: center;
+    justify-content: space-between;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.wrapper3 li:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.02);
+}
+
+/* Task title + description box layout */
+.title-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+/* Title */
+.title-box h2 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #fff;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+/* Description */
+.task-description {
+    flex: 1;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Delete button */
+.btn-delete {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.btn-delete:hover {
+    background-color: #ff1a1a;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 15px;
+    padding: 15px 25px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.task-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+.task-content h2.completed {
+    text-decoration: line-through;
+    color: #aaa;
+}
+.task-actions button {
+    margin-left: 10px;
+    border: none;
+    border-radius: 25px;
+    padding: 8px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-complete {
+    background: #4CAF50;
+    color: white;
+}
+.btn-complete:hover {
+    background: #45a049;
+}
+.btn-delete {
+    background: #ff4d4d;
+    color: white;
+}
+.btn-delete:hover {
+    background: #e60000;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    padding: 25px 35px;
+    border-radius: 15px;
+    width: 400px;
+    text-align: center;
+    position: relative;
+}
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close:hover {
+    color: red;
+}
+textarea {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    resize: none;
+    margin-bottom: 10px;
+}
+
+.status-btn {
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s;
+}
+
+.status-btn:hover {
+    transform: scale(1.1);
+    opacity: 0.9;
+}
+
+.delete-btn {
+    border: none;
+    background: red;
+    color: #fff;
+    font-size: 18px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s;
+}
+
+.delete-btn:hover {
+    transform: scale(1.1);
+    background-color: darkred;
 }
