@@ -16,6 +16,7 @@ body{
 }
 
 .wrapper{
+    height: 600px;
     width: 1200px;
     background-color: rgba(0, 0, 0, 0.5);
     border: 4px solid rgba(255, 255, 255, .8);
@@ -31,6 +32,8 @@ body{
 }
 
 .wrapper3{
+    height: calc(100% - 140px);
+    overflow-y: scroll;
     width: 100%;
     margin: 30px 0;
     padding: 30px 40px;
@@ -73,7 +76,7 @@ body{
 }
 
 .wrapper .btn{
-    width: 15%;
+    width: 125px;
     height: 45px;
     background: #fff;
     border: none;
@@ -255,7 +258,6 @@ textarea {
 }
 
 .status-btn:hover {
-    transform: scale(1.1);
     opacity: 0.9;
 }
 
@@ -271,6 +273,5 @@ textarea {
 }
 
 .delete-btn:hover {
-    transform: scale(1.1);
     background-color: darkred;
 }

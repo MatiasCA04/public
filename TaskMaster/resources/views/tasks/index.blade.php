@@ -23,12 +23,13 @@
         </form>
 
         <div class="wrapper3">
-            <ul>
+            <ul id="taskList">
                 @foreach ($tasks as $task)
-                <li class="task-item" onclick="openTaskModal({{ $task->id }}, '{{ $task->title }}', '{{ $task->description }}')">
+                <li class="task-item" data-id="{{ $task->id}}" data-title="{{ $task->title }}" data-description="{{ $task->description }}" data-completed="{{ $task->completed ? 'true' : 'false' }}">
+                <div class="title-box">
+                    <h2>{{ $task->title }}</h2>
+                </div>
                 <div class="task-box">
-                    <h3>{{ $task->title }}</h3>
-
                 {{-- Toggle Complete / Incomplete --}}
                     <form action="{{ route('tasks.toggle', $task->id) }}" method="POST" style="display:inline;">
                     @csrf
@@ -66,58 +67,42 @@
     </div>
     <script>
     
-        document.addEventListener("DOMContentLoaded", function () {
-        const addTaskBtn = document.getElementById("addTaskBtn");
-        const taskInput = document.getElementById("taskInput");
-        const taskList = document.getElementById("taskList"); // ul element
+        document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("taskModal");
+    const taskList = document.getElementById("taskList");
 
-        addTaskBtn.addEventListener("click", function () {
-            const taskTitle = taskInput.value.trim();
-            if (!taskTitle) return;
+    // Open modal when clicking any <li>
+    taskList.addEventListener("click", (e) => {
+        const taskItem = e.target.closest(".task-item");
+        if (!taskItem) return;
 
-            const li = document.createElement("li");
-            li.innerHTML = `
-                <div class="title-box">
-                    <h2>${taskTitle}</h2>
-                    <p class="task-description"></p>
-                </div>
-                <button class="btn-delete">DELETE</button>
-            `;
+        const id = taskItem.dataset.id;
+        const title = taskItem.dataset.title;
+        const description = taskItem.dataset.description || "";
 
-            // Add delete functionality to the button
-            li.querySelector(".btn-delete").addEventListener("click", function (e) {
-                e.stopPropagation(); // prevent opening modal later
-                li.remove();
-            });
-
-            taskList.appendChild(li);
-            taskInput.value = "";
-        });
+        openTaskModal(id, title, description);
     });
 
-        function openTaskModal(id, title, description, completed) {
-            const modal = document.getElementById("taskModal");
-            document.getElementById("modalTitle").innerText = title;
-            document.getElementById("modalDescription").innerText = description || "No description yet.";
-            document.getElementById("modalTextarea").value = description || "";
+    // Stop event bubbling from buttons
+    document.querySelectorAll(".status-btn, .delete-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => e.stopPropagation());
+    });
 
-            // Update form action dynamically
-            document.getElementById("descriptionForm").action = `/tasks/${id}`;
+    function openTaskModal(id, title, description) {
+        document.getElementById("modalTitle").innerText = title;
+        document.getElementById("modalDescription").innerText = description || "No description yet.";
+        document.getElementById("modalTextarea").value = description || "";
+        document.getElementById("descriptionForm").action = `/tasks/${id}`;
+        modal.style.display = "flex";
+    }
 
-            modal.style.display = "flex";
-        }
+    // Close modal
+    window.closeTaskModal = () => (modal.style.display = "none");
 
-        function closeTaskModal() {
-            document.getElementById("taskModal").style.display = "none";
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById("taskModal");
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
+    window.onclick = (event) => {
+        if (event.target === modal) modal.style.display = "none";
+    };
+});
 </script>
 </body>
 </html>
