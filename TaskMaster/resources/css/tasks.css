@@ -15,6 +15,126 @@ body{
     background-position: center;
 }
 
+.user{
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 40px;
+    top: 40px;
+    cursor: pointer;
+}
+
+.user i:hover {
+    transform: scale(1.1);
+}
+
+/* ===== USER MODAL ===== */
+.user-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6); /* Dark overlay */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal inner box */
+.user-modal .modal-content {
+    background-color: #1e293b; /* dark slate background */
+    color: #f1f5f9;
+    margin: auto;
+    padding: 25px 30px;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    position: relative;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Close (X) button */
+.user-modal .close {
+    color: #f8fafc;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.user-modal .close:hover {
+    color: #38bdf8;
+}
+
+/* Headline */
+.user-modal h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #38bdf8;
+}
+
+/* Form elements */
+.user-modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-modal label {
+    font-weight: 500;
+    color: #e2e8f0;
+    text-align: left;
+}
+
+.user-modal input[type="text"],
+.user-modal input[type="email"],
+.user-modal input[type="password"] {
+    padding: 10px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    background-color: #334155;
+    color: #f1f5f9;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.user-modal input:focus {
+    border-color: #38bdf8;
+}
+
+/* Save button */
+.user-modal .save-btn {
+    margin-top: 10px;
+    background-color: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.user-modal .save-btn:hover {
+    background-color: #1e40af;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+
+
 .wrapper{
     height: 600px;
     width: 1200px;
@@ -190,6 +310,11 @@ body{
     cursor: pointer;
     transition: 0.2s;
 }
+
+#taskModal .save-btn{
+    width: 100%;
+}
+
 .btn-complete {
     background: #4CAF50;
     color: white;
@@ -205,28 +330,109 @@ body{
     background: #e60000;
 }
 
-/* Modal */
+/* ===== TASK MODAL (matches user modal style) ===== */
 .modal {
-    display: none;
+    display: none; /* Hidden by default */
     position: fixed;
     z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.6);
+    background-color: rgba(0, 0, 0, 0.6); /* dark overlay */
     justify-content: center;
     align-items: center;
 }
+
+/* Inner content box */
 .modal-content {
-    background: rgba(255, 255, 255, 0.95);
-    color: #333;
-    padding: 25px 35px;
-    border-radius: 15px;
-    width: 400px;
-    text-align: center;
+    background-color: #1e293b; /* same dark slate background */
+    color: #f1f5f9;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    width: 450px;
+    max-width: 90%;
+    padding: 25px 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     position: relative;
+    animation: fadeIn 0.3s ease;
 }
+
+.modal-content p{
+    text-align: center;
+}
+
+.modal-content .btn{
+    margin-left: auto;
+}
+
+/* Close button */
+.modal-content .close {
+    color: #f8fafc;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.modal-content .close:hover {
+    color: #38bdf8;
+}
+
+/* Title & Description */
+.modal-content h2 {
+    color: #38bdf8;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+.modal-content p {
+    font-size: 16px;
+    color: #cbd5e1;
+    margin-bottom: 15px;
+}
+
+/* Textarea (edit description) */
+.modal-content textarea {
+    width: 100%;
+    height: 120px;
+    background-color: #334155;
+    color: #f1f5f9;
+    border: 1px solid #475569;
+    border-radius: 8px;
+    padding: 10px;
+    resize: none;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+.modal-content textarea:focus {
+    border-color: #38bdf8;
+}
+
+/* Save button */
+.modal-content button {
+    background-color: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+}
+.modal-content button:hover {
+    background-color: #1e40af;
+}
+
+/* Animation (same as user modal) */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
 .close {
     position: absolute;
     right: 15px;
@@ -238,6 +444,7 @@ body{
 .close:hover {
     color: red;
 }
+
 textarea {
     width: 100%;
     border-radius: 10px;
@@ -275,3 +482,4 @@ textarea {
 .delete-btn:hover {
     background-color: darkred;
 }
+

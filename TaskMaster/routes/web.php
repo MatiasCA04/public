@@ -3,6 +3,7 @@
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('auth.login'); 
@@ -20,3 +21,5 @@ Route::get('/tasks', function () {
 
 Route::resource('tasks', TaskController::class);
 Route::patch('/tasks/{task}/toggle', [TaskController::class, 'toggle'])->name('tasks.toggle');
+
+Route::put('/user/update', [UserController::class, 'update'])->name('user.update')->middleware('auth');

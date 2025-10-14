@@ -10,6 +10,34 @@
     <link href='https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css' rel='stylesheet'>
 </head>
 <body class="">
+<div class="user" id="userIcon">
+    <i class='bx bxs-user-circle'></i>
+</div>
+
+<!-- Hidden modal -->
+<div id="userModal" class="user-modal">
+    <div class="modal-content">
+        <span class="close" id="closeUserModal">&times;</span>
+        <h2>Edit Profile</h2>
+
+        <form action="{{ route('user.update') }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            <label for="userName">Name</label>
+            <input type="text" id="userName" name="name" value="{{ Auth::user()->name }}" required>
+
+            <label for="userEmail">Email</label>
+            <input type="email" id="userEmail" name="email" value="{{ Auth::user()->email }}" required>
+
+            <label for="userPassword">New Password (optional)</label>
+            <input type="password" id="userPassword" name="password">
+
+            <button type="submit" class="save-btn">Save Changes</button>
+        </form>
+    </div>
+</div>
+
     <div class="wrapper">
         <form action="{{ route('tasks.store') }}" method="POST" class="mb-4">
             @csrf
@@ -59,7 +87,7 @@
                     @csrf
                     @method('PUT')
                         <textarea name="description" id="modalTextarea" placeholder="Add a description..." rows="4"></textarea>
-                        <button type="submit" class="btn">Save</button>
+                        <button type="submit" class="save-btn">Save</button>
                     </form>
                 </div>
             </div>
@@ -70,6 +98,28 @@
         document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("taskModal");
     const taskList = document.getElementById("taskList");
+    const userIcon = document.getElementById("userIcon");
+    const userModal = document.getElementById("userModal");
+    const closeUserModal = document.getElementById("closeUserModal");
+
+    console.log("Script loaded");
+
+    // Open modal
+    userIcon.addEventListener("click", () => {
+        userModal.style.display = "flex";
+    });
+
+    // Close modal with X
+    closeUserModal.addEventListener("click", () => {
+        userModal.style.display = "none";
+    });
+
+    // Close modal if clicking outside content
+    window.addEventListener("click", (e) => {
+        if (e.target === userModal) {
+            userModal.style.display = "none";
+        }
+    });
 
     // Open modal when clicking any <li>
     taskList.addEventListener("click", (e) => {
@@ -102,7 +152,9 @@
     window.onclick = (event) => {
         if (event.target === modal) modal.style.display = "none";
     };
+
 });
+
 </script>
 </body>
 </html>
