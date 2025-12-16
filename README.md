@@ -14,6 +14,6 @@ Repositório índice com os principais projetos desenvolvidos:
 - [TaskMaster](https://github.com/MatiasCA04/public/tree/main/TaskMaster)
   Task Manager/To Do List, in PHP Laravel.
 
--[PawLife](https://github.com/MatiasCA04/public/tree/main/PawLife)
+- [PawLife](https://github.com/MatiasCA04/public/tree/main/PawLife)
   Website de uma empresa fictícia de produtos animais, a pedido para um projeto na UA.
 
